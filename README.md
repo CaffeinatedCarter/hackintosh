@@ -50,6 +50,7 @@ Tracking the progress of my OpenCore Hackintosh build. Currently dual-booting ma
 * **Monitor:** AOC CQ27G1 27.0" QHD 144Hz FreeSync Monitor
 * **Keyboard:** Logitech G413 Carbon
 * **Mouse:** Logitech G502 HERO
+* **Network:** PCIe Adapter WiFi Card BCM94360CD
 
 View the build on PCPartPicker: https://pcpartpicker.com/list/nppTDx
 
