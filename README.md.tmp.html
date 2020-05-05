@@ -1,0 +1,627 @@
+<h1>Hackintosh (2020)</h1>
+
+<p>Tracking the progress of my OpenCore Hackintosh build. Currently dual-booting macOS Catalina and Windows 10.</p>
+
+<ul>
+<li><a href="EFI/"><code>EFI</code></a>: Copy of current EFI directory from the macOS boot drive</li>
+<li><a href="EFI_Install/"><code>EFI_Install</code></a>: Copy of EFI directory from the USB drive used during macOS installation</li>
+</ul>
+
+<p><img src="Screenshots/sysinfo.png" alt="System Overview" title="" /> <img src="Screenshots/neofetch.png" alt="NeoFetch" title="" /></p>
+
+<h2>Table of Contents</h2>
+
+<ul>
+<li><a href="#the-build">The Build</a></li>
+<li><a href="#prepare-install-media">Prepare Install Media</a></li>
+<li><a href="#install-opencore">Install OpenCore</a></li>
+<li><a href="#gather-kexts">Gather Kexts</a></li>
+<li><a href="#configure-opencore">Configure OpenCore</a></li>
+<li><a href="#bios-settings-version-f12c">BIOS Settings</a></li>
+<li><a href="#prepare-for-macos-installation">Prepare for macOS Installation</a></li>
+<li><a href="#install-macos-catalina">Install macOS Catalina</a></li>
+<li><a href="#post-installation">Post Installation</a>
+<ul>
+<li><a href="#make-macos-drive-bootable">Make macOS Drive Bootable</a></li>
+<li><a href="#enable-the-discrete-graphics-card-with-headless-igpu">Enable the Discrete Graphics Card with Headless iGPU</a></li>
+<li><a href="#map-usb-ports">Map USB Ports</a></li>
+<li><a href="#enable-bluetooth">Enable Bluetooth</a></li>
+<li><a href="#enable-filevault">Enable FileVault</a></li>
+<li><a href="#enable-trim-for-solid-state-drives">Enable TRIM for Solid State Drives</a></li>
+<li><a href="#fix-cpu-type-in-about-this-mac">Fix CPU Type in About This Mac</a></li>
+<li><a href="#fix-memory-tab-in-about-this-mac">Fix Memory Tab in About This Mac</a></li>
+</ul></li>
+<li><a href="#final-bios-settings">Final BIOS Settings</a></li>
+<li><a href="#final-opencore-configuration">Final OpenCore Configuration</a></li>
+<li><a href="#benchmarks">Benchmarks</a></li>
+<li><a href="#issues">Issues</a></li>
+<li><a href="#upgrade-log">Upgrade Log</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#resources">Resources</a></li>
+</ul>
+
+<h2>The Build</h2>
+
+<ul>
+<li><strong>CPU:</strong> AMD Ryzen 7 3700X </li>
+<li><strong>CPU Cooler:</strong> Cooler Master Hyper 212 EVO (Connected to CPU_FAN)</li>
+<li><strong>Motherboard:</strong> Gigabyte B450 AORUS PRO WIFI (rev. 1.0)</li>
+<li><strong>Memory:</strong> G.Skill Trident Z RGB 16 GB DDR4-3000</li>
+<li><strong>Storage (macOS):</strong> Western Digital Blue 500GB M.2 SSD</li>
+<li><strong>Storage (Windows):</strong> Samsung 970 Evo 500GB M.2 NVME SSD</li>
+<li><strong>Video Card:</strong> ASRock Radeon RX 5700 XT 8 GB</li>
+<li><strong>Power Supply:</strong> Rosewill 550W 80+ Gold</li>
+<li><strong>Case:</strong> Fractal Design Meshify C</li>
+<li><strong>Monitor:</strong> MSI Optix MAG241C 23.6" FHD 144Hz FreeSync Monitor</li>
+<li><strong>Monitor:</strong> AOC CQ27G1 27.0" QHD 144Hz FreeSync Monitor</li>
+<li><strong>Keyboard:</strong> Logitech G413 Carbon</li>
+<li><strong>Mouse:</strong> Logitech G502 HERO</li>
+<li><strong>Network:</strong> PCIe Adapter WiFi Card BCM94360CD</li>
+</ul>
+
+<p>View the build on PCPartPicker: https://pcpartpicker.com/list/nppTDx</p>
+
+<h2>Prepare Install Media</h2>
+
+<ol>
+<li>Download the <a href="https://apps.apple.com/us/app/macos-catalina/id1466841314?mt=12">macOS Catalina installer</a> (v10.15.1) from the Mac App Store</li>
+<li><p>Open Terminal and format the target USB drive as with the following command:</p>
+
+<p><code>diskutil partitionDisk /dev/{YOUR_DISK_ID} GPT JHFS+ "USB" 100%</code></p></li>
+<li><p><a href="https://support.apple.com/sl-si/HT201372">Create the bootable macOS installer</a>: </p>
+
+<p><code>sudo /Applications/Install\ macOS\ Catalina.app/Contents/Resources/createinstallmedia --volume /Volumes/USB</code></p></li>
+<li><p>Once the program finishes, your USB drive should now be called <code>Install macOS Catalina</code></p></li>
+</ol>
+
+<h2>Install OpenCore</h2>
+
+<ul>
+<li>Download <a href="https://github.com/Dids/opencore-builder/releases">OpenCore Install Package</a> (v2.5k_r5097) and <a href="http://mackie100projects.altervista.org/download-opencore-configurator/">OpenCore Configurator Global Edition</a> (v5.7.0.0)</li>
+<li>Install OpenCore to the USB device and customize with the following options:
+<ul>
+<li>OpenCore for UEFI booting only</li>
+<li>Install OpenCore in the ESP</li>
+<li>UEFI Drivers</li>
+<li>Recommended drivers
+<ul>
+<li>ApfsDriverLoader</li>
+<li>HFSPlus</li>
+</ul></li>
+<li>Memory fix drivers
+<ul>
+<li>OsxAptioFix3Drv</li>
+</ul></li>
+<li>Additional drivers
+<ul>
+<li>EmuVariableUefi</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2>Gather Kexts</h2>
+
+<ul>
+<li><a href="https://github.com/acidanthera/AppleALC/releases">AppleALC.kext</a> (v1.4.3)</li>
+<li><a href="https://onedrive.live.com/?authkey=%21APjCyRpzoAKp4xs&amp;id=FE4038DA929BFB23%21455134&amp;cid=FE4038DA929BFB23">IntelMausiEthernet.kext</a> (v2.5.0)</li>
+<li><a href="https://github.com/acidanthera/Lilu/releases">Lilu.kext</a> (v1.3.9)</li>
+<li><a href="https://bitbucket.org/RehabMan/os-x-usb-inject-all/downloads/">USBInjectAll.kext</a> (v0.7.1)</li>
+<li><a href="https://github.com/acidanthera/VirtualSMC/releases">VirtualSMC.kext</a> (v1.0.9)
+<ul>
+<li>SMCProcessor.kext</li>
+<li>SMCSuperIO.kext</li>
+</ul></li>
+<li><p><a href="https://github.com/acidanthera/WhateverGreen/releases">WhateverGreen.kext</a> (v1.3.4)</p></li>
+<li><p>Use OpenCore Configurator to mount the EFI partition of the USB drive</p></li>
+<li>Copy the downloaded .kexts to <code>EFI/CLOVER/kexts/Other/</code> on the USB drive EFI partition</li>
+<li>Copy <code>VirtualSmc.efi</code> to <code>EFI/CLOVER/drivers/UEFI/</code> on the USB drive EFI partition</li>
+</ul>
+
+<p>The exact kexts and drivers I used during my installation can be found in <a href="EFI_install/"><code>EFI_install/</code></a>.</p>
+
+<h2>Configure OpenCore</h2>
+
+<p>The OpenCore configuration for the installation is heavily based upon corpnewt's <a href="https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/">r/Hackintosh Vanilla Desktop Guide</a> for the <a href="https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/config.plist-per-hardware/coffee-lake">Coffee Lake</a> microarchitecture. The major difference is with how the iGPU is enabled because I encountered difficulties when using device property injections. Each section of the configuration used during installation is documented below. A sanitized version of the config file can be found in <a href="EFI_install/CLOVER/"><code>EFI_install/CLOVER/</code></a>. You will need to use OpenCore Configurator or <a href="https://github.com/acidanthera/MacInfoPkg/releases"><code>macserial</code></a> to generate a valid serial number and board serial number for the <code>iMac19,1</code>  SMBIOS.</p>
+
+<p><details><summary>ACPI</summary>
+  <img src="Screenshots/Install_OpenCore_ACPI_1.png">
+  <img src="Screenshots/Install_OpenCore_ACPI_2.png">
+</details></p>
+
+<p><details><summary>Boot</summary>
+  <img src="Screenshots/Install_OpenCore_Boot.png">
+</details></p>
+
+<p><details><summary>Boot Graphics</summary>
+  <img src="Screenshots/Install_OpenCore_BootGraphics.png">
+</details></p>
+
+<p><details><summary>CPU</summary>
+  <img src="Screenshots/Install_OpenCore_CPU.png">
+</details></p>
+
+<p><details><summary>Devices</summary>
+  <img src="Screenshots/Install_OpenCore_Devices_1.png">
+  <img src="Screenshots/Install_OpenCore_Devices_2.png">
+</details></p>
+
+<p><details><summary>Disable Drivers</summary>
+  <img src="Screenshots/Install_OpenCore_DisableDrivers.png">
+</details></p>
+
+<p><details><summary>GUI</summary>
+  <img src="Screenshots/Install_OpenCore_GUI.png">
+</details></p>
+
+<p><details><summary>Graphics</summary>
+  <img src="Screenshots/Install_OpenCore_Graphics.png">
+</details></p>
+
+<p><details><summary>Kernel and Kext Patches</summary>
+  <img src="Screenshots/Install_OpenCore_KernalKextPatches.png">
+</details></p>
+
+<p><details><summary>Rt Varibles</summary>
+  <img src="Screenshots/Install_OpenCore_RtVariables.png">
+</details></p>
+
+<p><details><summary>SMBIOS</summary>
+  <img src="Screenshots/Install_OpenCore_SMBIOS.png">
+</details></p>
+
+<p><details><summary>System Parameters</summary>
+  <img src="Screenshots/Install_OpenCore_SystemParameters.png">
+</details></p>
+
+<h2>BIOS Settings (Version F12c)</h2>
+
+<p>Enter <strong>Advanced Mode</strong> and <strong>Load Optimized Defaults</strong> to reset the default BIOS settings. Modify the following settings:</p>
+
+<ul>
+<li>Tweaker
+<ul>
+<li>Advanced CPU Settings</li>
+<li>Vt-d → <strong>Disabled</strong></li>
+<li>Extreme Memory Profile (X.M.P.) → <strong>Profile 1</strong></li>
+</ul></li>
+<li>Settings
+<ul>
+<li>Platform Power</li>
+<li>ErP → <strong>Disabled</strong></li>
+<li>Soft-Off by PWR_BTTN → <strong>Delay 4 Sec.</strong></li>
+<li>RC6 (Render Standby) → <strong>Enabled</strong></li>
+<li>IO Ports</li>
+<li>Initial Display Output → <strong>IGFX</strong></li>
+<li>Internal Graphics → <strong>Enabled</strong></li>
+<li>DVMT Pre-Allocated → <strong>32M</strong></li>
+<li>DVMT Total Gfx Mem → <strong>256M</strong></li>
+<li>Aperture Size → <strong>512MB</strong></li>
+<li>Audio Controller → <strong>Enabled</strong></li>
+<li>Above 4G Decoding → <strong>Enabled</strong></li>
+<li>USB Configuration
+<ul>
+<li>Legacy USB Support → <strong>Enabled</strong></li>
+<li>XHCI Hand-off → <strong>Enabled</strong></li>
+</ul></li>
+<li>Network Stack Configuration
+<ul>
+<li>Network Stack → <strong>Disabled</strong></li>
+</ul></li>
+<li>Miscellaneous</li>
+<li>Intel Platform Trust Technology (PTT) → <strong>Disabled</strong></li>
+</ul></li>
+<li>Boot
+<ul>
+<li>Windows 8/10 Features → <strong>Windows 8/10</strong></li>
+<li>CSM Support → <strong>Disabled</strong></li>
+</ul></li>
+<li>Smart Fan 5 Settings (F6)
+<ul>
+<li>CPU_FAN (or whichever header was used for the AIO CPU cooler)</li>
+<li>Speed Control → <strong>Full Speed</strong></li>
+</ul></li>
+<li>Save &amp; Exit
+<ul>
+<li>Choose <strong>Save and Exit</strong> to save BIOS settings and reboot</li>
+</ul></li>
+</ul>
+
+<h2>Prepare for macOS Installation</h2>
+
+<ol>
+<li>Connect HDMI cable to the integrated graphics output on the motherboard</li>
+<li>Insert macOS Installer USB drive into the USB 3.0 port adjacent to Ethernet connector</li>
+<li>Connect keyboard and mouse to USB 2.0 ports</li>
+</ol>
+
+<p><img src="Screenshots/Install_Ports.png" alt="Installation Connections" title="" /></p>
+
+<h2>Install macOS Catalina</h2>
+
+<ol>
+<li>Restart computer and select the USB drive as the default BIOS boot device </li>
+<li>Select <code>Install macOS Catalina</code> as the OpenCore boot volume </li>
+<li>Launch Disk Utility and format the destination drive (Samsung 970 Evo)
+<ul>
+<li>Name: <code>Macintosh SSD</code></li>
+<li>Format: <code>Mac OS Extended (Journaled)</code> or <code>APFS</code> (will be reformatted as <code>APFS</code> during installation)</li>
+<li>Scheme: <code>GUID Partition Map</code></li>
+</ul></li>
+<li>Launch Install macOS and select the <code>Macintosh SSD</code> drive as the destination 
+<ul>
+<li>As the system restarts, keep selecting <code>Boot macOS Install from Macintosh SSD</code> from the OpenCore menu</li>
+<li>If the system freezes, use the power button to shut down the computer and turn off the power supply. Wait a few minutes before restarting to continue the installation process.</li>
+</ul></li>
+<li>Once the installation is complete, select <code>Boot macOS from Macintosh SSD</code> from the OpenCore menu
+<ul>
+<li>Proceed through the normal macOS setup but delay signing into iCloud until post installation is complete</li>
+</ul></li>
+</ol>
+
+<h2>Post Installation</h2>
+
+<h3>Make macOS Drive Bootable</h3>
+
+<ol>
+<li>Mount the EFI partition of <code>Macintosh SSD</code> and copy over the entire EFI directory from the USB drive</li>
+<li>Restart the computer and select the internal drive (Samsung 970 Evo) as the default BIOS boot device</li>
+<li>Select <code>Boot macOS from Macintosh SSD</code> from the OpenCore menu</li>
+<li>You should now have a bootable macOS installation!</li>
+</ol>
+
+<p><em>Note: You can now remove the USB drive but keep it handy for debugging issues with your Hackintosh.</em></p>
+
+<h3>Enable the Discrete Graphics Card with Headless iGPU</h3>
+
+<ol>
+<li>Modify the OpenCore configuration on the EFI partition of <code>Macintosh SSD</code>
+<ul>
+<li>Boot
+<ul>
+<li>Remove the <code>-wegnoegpu</code> boot argument</li>
+<li>Add the <code>agdpmod=pikera</code> boot argument</li>
+</ul></li>
+<li>Devices
+<ul>
+<li>Clear value of <code>IntelGFX</code> field</li>
+<li>Add new device: <code>PciRoot(0x0)/Pci(0x2,0x0)</code>
+<ul>
+<li>Add property: <code>AAPL,ig-platform-id</code> - <code>0300983E</code> - <code>DATA</code>
+<img src="Screenshots/Post_WEG_Property.png" alt="WhateverGreen Property" title="" /></li>
+</ul></li>
+</ul></li>
+<li>Graphics
+<ul>
+<li>Uncheck <code>Inject Intel</code></li>
+</ul></li>
+</ul></li>
+<li>Reboot the computer and modify the following BIOS settings:
+<ul>
+<li>Settings
+<ul>
+<li>IO Ports</li>
+<li>Initial Display Output → <strong>PCIe 1 Slot</strong></li>
+<li>Internal Graphics → <strong>Enabled</strong></li>
+<li>DVMT Pre-Allocated → <strong>64M</strong></li>
+<li>DVMT Total Gfx Mem → <strong>256M</strong></li>
+</ul></li>
+</ul></li>
+<li>Save the changes and reboot the computer</li>
+<li>Disconnect the HDMI cable from the motherboard and connect a DisplayPort cable to the graphics card</li>
+<li>You should now be using the natively-supported discrete graphics card (as of macOS 10.15.1) to power your display(s) in conjunction with the headless iGPU for compute tasks.
+<ul>
+<li><a href="https://www.insanelymac.com/forum/topic/335018-hackintool-v286/">Hackintool</a> can be used to verify the availability of the iGPU for hardware decoding under the <code>VDA Decoder</code> system parameter. </li>
+</ul></li>
+</ol>
+
+<p><img src="Screenshots/Post_HackintoolGraphics.png" alt="Hackintool Graphics" title="" /></p>
+
+<p><em>Note: You should also make these changes to your USB drive OpenCore configuration so that it can properly boot your system if the <code>Macintosh SSD</code> EFI partition gets messed up. If you don't update the configuration, you'll have to swap back to using the integrated graphics instead of the discrete graphics card.</em></p>
+
+<h3>Map USB Ports</h3>
+
+<p>Apple's USB driver implementation restricts macOS to only 15 HS/SS ports. During the installation process, we utilized RehabMan's <a href="https://github.com/RehabMan/OS-X-USB-Inject-All">USBInjectAll</a> kext and USB port limit kext patches to <code>com.apple.iokit.IOUSBHostFamily</code> and <code>com.apple.driver.usb.AppleUSBXHCI</code> to circumvent this restriction. While useful during installation, it is generally recommended that these workarounds be removed in favor of a custom SSDT or port injector kext for the final system configuration to avoid buffer overruns and sleep/wake issues. In order to map out the custom port injection for the system, we will be using corpnewt's <a href="https://github.com/corpnewt/USBMap">USBMap</a> Python script and following along with the process described in <a href="https://www.youtube.com/watch?v=j3V7szXZZTc">Carl Mercier's YouTube video</a>.</p>
+
+<p><em>If you have the Gigabyte Z390 AORUS PRO WIFI motherboard and want the same USB port mapping I utilize, you can download my <a href="EFI/CLOVER/kexts/Other/USBMap.kext"><code>USBMap.kext</code></a>, <a href="EFI/CLOVER/ACPI/patched/SSDT-USBX.aml"><code>SSDT-USBX.aml</code></a>, and <a href="EFI/CLOVER/ACPI/patched/SSDT-USBX.dsl"><code>SSDT-USBX.dsl</code></a> and skip to Step 5.</em></p>
+
+<ol>
+<li><p>Add the <code>change EHC1 to EH01</code> and <code>change EHC2 to EH02</code> patches to the ACPI OpenCore configuration on the EFI partition of <code>Macintosh SSD</code> and reboot</p>
+
+<p><img src="Screenshots/Post_USBMap_ACPI.png" alt="EHC1 and EHC2 patches" title="" /></p></li>
+<li><p>Open Terminal and run the following commands to download and execute the USBMap script:
+<code>
+git clone https://github.com/corpnewt/USBMap
+cd USBMap
+chmod +x USBMap.command
+./USBMap.command
+</code></p></li>
+<li><p>Press <code>d</code> then <code>[enter]</code> to begin the port discovery process. Using a USB device (e.g. flash drive), systematically test each external USB port to identify its corresponding ID. The complete USB port layout for the Gigabyte Z390 AORUS PRO WIFI motherboard is detailed in the image below. Once the desired ports have been identified, press <code>q</code> then <code>[enter]</code> to return to the main menu. </p>
+
+<p><img src="Screenshots/Post_USBMap_Schematic.png" alt="USB Port Mapping" title="" /></p></li>
+<li><p>Press <code>p</code> then <code>[enter]</code> to begin creating the custom port mapping kext</p>
+
+<ol>
+<li>Press <code>a</code> then <code>[enter]</code> to enable all ports</li>
+<li>Using the list of identified ports, enter the numbers of the ports you want to <strong>disable</strong>
+<ul>
+<li>No more than 15 XHC ports can be enabled</li>
+<li><code>2,3,4,5,9,11,12,15,16,18,25</code> → <code>HS02,HS03,HS04,HS05,HS09,HS11,HS12,USR1,USR2,SS02,SS09</code>
+<ul>
+<li>Disables AIO control via the internal header and USB 2.0 for three rear Type-A ports</li>
+<li>If you don't need Bluetooth, you can disable <code>HS14</code> and enable one of the disabled USB 2.0 ports</li>
+</ul></li>
+<li>The <strong>enabled ports are red</strong> and the <strong>disabled ports are gray</strong> in the image above</li>
+</ul></li>
+<li>Press <code>k</code> then <code>[enter]</code> to build the custom USBMap.kext file</li>
+<li>Allow the program to move the files to your EFI partition or copy them manually:
+<ul>
+<li><code>USBMap.kext</code> → <a href="EFI/CLOVER/kexts/Other/"><code>EFI/CLOVER/kexts/Other/</code></a></li>
+<li><code>SSDT-USBX.aml</code> → <a href="EFI/CLOVER/ACPI/patched/"><code>EFI/CLOVER/ACPI/patched/</code></a></li>
+<li><code>SSDT-USBX.dsl</code> → <a href="EFI/CLOVER/ACPI/patched/"><code>EFI/CLOVER/ACPI/patched/</code></a></li>
+</ul></li>
+</ol></li>
+<li>Modify the OpenCore configuration on the EFI partition of <code>Macintosh SSD</code>
+<ul>
+<li>ACPI
+<ul>
+<li>Remove the <code>change EHC2 to EH02</code> patch (not present on this system)</li>
+</ul></li>
+<li>Kernel and Kext Patches
+<ul>
+<li>Remove the <code>com.apple.iokit.IOUSBHostFamily</code> kext patch</li>
+<li>Remove the <code>com.apple.driver.usb.AppleUSBXHCI</code> kext patch</li>
+</ul></li>
+</ul></li>
+<li>Delete the <code>USBInjectAll.kext</code> from <code>EFI/CLOVER/kexts/Other/</code> on the EFI partition of <code>Macintosh SSD</code></li>
+<li>You should now have fully custom-mapped USB ports on your system! Use the USBMap script after a reboot to verify the correct ports are enabled.</li>
+</ol>
+
+<h3>Enable Bluetooth</h3>
+
+<p>The Intel CNVi modules that provide integrated Wi-Fi and Bluetooth functionality on motherboards are not natively supported by macOS but can be enabled using the <a href="https://github.com/zxystd/IntelBluetoothFirmware">IntelBluetoothFirmware</a> kext on supported devices. The Gigabyte Z390 AORUS PRO WIFI contains a compatible <a href="https://www.intel.com/content/www/us/en/products/wireless/wireless-products/dual-band-wireless-ac-9560.html">Intel Wireless-AC 9560</a> CNVi (Vendor ID: <code>0x8087</code>, Device ID: <code>0x0AAA</code>). <a href="https://www.insanelymac.com/forum/topic/335018-hackintool-v286/">Hackintool</a> can be used to determine the specific model on your motherboard (<code>System &gt; Peripherals &gt; Bluetooth</code>).
+  * <em>Note: You must enable the internal USB port used by the CNVi module during the <a href="#map-usb-ports">USB mapping process</a>.</em></p>
+
+<p>Download the <a href="https://github.com/zxystd/IntelBluetoothFirmware/releases">latest release</a> and place the two kexts in <a href="EFI/CLOVER/kexts/Other/"><code>EFI/CLOVER/kexts/Other/</code></a>. Reboot and you should be able to use Bluetooth on your Hackintosh.</p>
+
+<p><img src="Screenshots/Post_Bluetooth.png" alt="Bluetooth System Report and Preferences" title="" /></p>
+
+<h3>Enable FileVault</h3>
+
+<p><a href="https://support.apple.com/en-us/HT204837">FileVault</a> is used to encrypt the startup disk on your Hackintosh. Enabling it is entirely optional but probably a good idea for the security conscious, especially if you are building a portable system. Before turning on the feature, you will need to make sure you have several drivers installed to allow OpenCore to interact with the encrypted drive. These instructions are based on the advice from <a href="https://www.tonymacx86.com/threads/filevault2-boot-issues-with-opencore-under-macos-catalina.285697/#post-2021159">this tonymacx86 comment</a> and <a href="https://fewtarius.gitbook.io/laptopguide/extras/enabling-filevault">this vanilla laptop guide</a>.</p>
+
+<ol>
+<li>If present, <strong>remove</strong> any of the following outdated OpenCore-installed FileVault 2 UEFI drivers:
+<ul>
+<li><code>AppleImageCodec.efi</code></li>
+<li><code>AppleKeyAggregator.efi</code></li>
+<li><code>AppleKeyFeeder.efi</code></li>
+<li><code>AppleUITheme.efi</code></li>
+<li><code>FirmwareVolume.efi</code></li>
+<li><code>HashServiceFix.efi</code></li>
+</ul></li>
+<li>Download <a href="https://github.com/acidanthera/AppleSupportPkg/releases/tag/2.0.9">AppleSupportPkg v2.0.9</a> and copy the following two drivers to <code>EFI/CLOVER/drivers/UEFI/</code>:
+<ul>
+<li><code>AppleGenericInput.efi</code></li>
+<li><code>AppleUiSupport.efi</code></li>
+</ul></li>
+<li>Modify the OpenCore configuration on the EFI partition of <code>Macintosh SSD</code>
+<ul>
+<li>Boot
+<ul>
+<li>Default Boot Volume  →  <code>Preboot</code></li>
+</ul></li>
+<li>GUI
+<ul>
+<li>Remove <code>Preboot</code> from hidden volumes (if present)</li>
+</ul></li>
+</ul></li>
+<li><p>Open System Preferences > Security &amp; Privacy and navigate to the FileVault tab</p>
+
+<ul>
+<li>Click <code>Turn On FileVault</code> and select an option for setting the recovery key</li>
+<li>Wait for encrypting to complete</li>
+</ul>
+
+<p><img src="Screenshots/Post_FileVault.png" alt="FileVault" title="" /></p></li>
+<li><p>Restart your system, which should now default to the <code>FileVault Preboot from Preboot</code> option, and enter your password at login to decrypt the system drive.</p></li>
+</ol>
+
+<p><em>Note: You should also make these changes to your USB drive OpenCore configuration so that it can properly boot your system if the <code>Macintosh SSD</code> EFI partition gets messed up. If you don't update the configuration, then the OpenCore bootloader will not be able to properly handle the FileVault-encrypted drive.</em></p>
+
+<h3>Enable TRIM for Solid State Drives</h3>
+
+<ol>
+<li><p>Open Terminal and enter the following command:</p>
+
+<p><code>sudo trimforce enable</code></p></li>
+<li><p>Verify TRIM was enabled in System Report:</p>
+
+<p><img src="Screenshots/Post_TRIM.png" alt="NVMExpress TRIM Support" title="" /></p></li>
+</ol>
+
+<h3>Fix CPU Type in About This Mac</h3>
+
+<p>For some reason, About This Mac and System Report do not properly identify the processor and list it as an 'Intel Core i9' instead of an 'Intel Core i7.' This can easily be fixed by using OpenCore Configurator to set the CPU Type to <code>0x0705</code> and rebooting.</p>
+
+<p><img src="Screenshots/Post_CPUType.png" alt="Before/After About This Mac - CPU" title="" /></p>
+
+<h3>Fix Memory Tab in About This Mac</h3>
+
+<p>The default <code>iMac19,1</code> SMBIOS configuration used in this build sets <code>PlatformFeature=0x22</code>, which indicates that the system lacks user-upgradable memory and therefore hides the Memory tab on About This Mac (as seen above) and any empty memory slots in the System Report. This can easily be fixed by using OpenCore Configurator to set <code>PlatformFeature=0x20</code> in the <code>SMBIOS</code> section and rebooting.</p>
+
+<p><img src="Screenshots/Post_PlatformFeature.png" alt="Before/After About This Mac - Memory" title="" /></p>
+
+<h3>Hide Windows Drive in macOS</h3>
+
+<p>Follow <a href="https://discussions.apple.com/docs/DOC-7942">these instructions</a> to prevent the Windows drive from automatically mounting in macOS:</p>
+
+<ol>
+<li><p>Open Terminal and enter the following command to get the <code>Volume UUID</code>:</p>
+
+<p><code>diskutil info /Volumes/{YOUR_WINDOWS_DRIVE_NAME}</code></p></li>
+<li><p>Enter <code>sudo vifs</code> to add the following line to <code>/etc/fstab</code>:</p>
+
+<p><code>UUID={YOUR_UUID} none ntfs rw,noauto</code></p></li>
+<li><p>Restart your system and the Windows partition will no longer automatically mount.</p></li>
+</ol>
+
+<h2>Final BIOS Settings</h2>
+
+<p>Screenshots of my current BIOS settings on my working (i.e. stable) system. </p>
+
+<p><details><summary>Tweaker</summary>
+  <img src="Screenshots/Post_BIOS_Tweaker.png"></p>
+
+<p>Advanced CPU Settings
+  <img src="Screenshots/Post_BIOS_Tweaker_CPU.png"></p>
+
+<p>Advanced Memory Settings
+  <img src="Screenshots/Post_BIOS_Tweaker_Memory.png"></p>
+
+<p></details></p>
+
+<p><details><summary>Settings</summary></p>
+
+<p>Platform Power
+  <img src="Screenshots/Post_BIOS_Settings_Power.png"></p>
+
+<p>IO Ports
+  <img src="Screenshots/Post_BIOS_Settings_IOPorts.png"></p>
+
+<p>USB Configuration
+  <img src="Screenshots/Post_BIOS_Settings_IOPorts_USB.png"></p>
+
+<p>SATA and RST Configuration
+  <img src="Screenshots/Post_BIOS_Settings_IOPorts_SATA.png"></p>
+
+<p>Miscellaneous
+  <img src="Screenshots/Post_BIOS_Settings_Misc.png"></p>
+
+<p></details></p>
+
+<p><details><summary>Boot</summary>
+  <img src="Screenshots/Post_BIOS_Boot.png">
+</details></p>
+
+<p><details><summary>Smart Fan 5 Settings</summary>
+  <img src="Screenshots/Post_BIOS_SmartFan.png">
+</details></p>
+
+<h2>Final OpenCore Configuration</h2>
+
+<p>A sanitized version of my final config file can be found in <a href="EFI/CLOVER/"><code>EFI/CLOVER/</code></a>. Each section of the configuration in OpenCore Configurator is also documented below.</p>
+
+<p><details><summary>ACPI</summary>
+  <img src="Screenshots/Post_OpenCore_ACPI_1.png">
+  <img src="Screenshots/Post_OpenCore_ACPI_2.png">
+</details></p>
+
+<p><details><summary>Boot</summary>
+  <img src="Screenshots/Post_OpenCore_Boot.png">
+</details></p>
+
+<p><details><summary>Boot Graphics</summary>
+  <img src="Screenshots/Post_OpenCore_BootGraphics.png">
+</details></p>
+
+<p><details><summary>CPU</summary>
+  <img src="Screenshots/Post_OpenCore_CPU.png">
+</details></p>
+
+<p><details><summary>Devices</summary>
+  <img src="Screenshots/Post_OpenCore_Devices_1.png">
+  <img src="Screenshots/Post_OpenCore_Devices_2.png">
+</details></p>
+
+<p><details><summary>Disable Drivers</summary>
+  <img src="Screenshots/Post_OpenCore_DisableDrivers.png">
+</details></p>
+
+<p><details><summary>GUI</summary>
+  <img src="Screenshots/Post_OpenCore_GUI.png">
+</details></p>
+
+<p><details><summary>Graphics</summary>
+  <img src="Screenshots/Post_OpenCore_Graphics.png">
+</details></p>
+
+<p><details><summary>Kernel and Kext Patches</summary>
+  <img src="Screenshots/Post_OpenCore_KernalKextPatches.png">
+</details></p>
+
+<p><details><summary>Rt Varibles</summary>
+  <img src="Screenshots/Post_OpenCore_RtVariables.png">
+</details></p>
+
+<p><details><summary>SMBIOS</summary>
+  <img src="Screenshots/Post_OpenCore_SMBIOS.png">
+</details></p>
+
+<p><details><summary>System Parameters</summary>
+  <img src="Screenshots/Post_OpenCore_SystemParameters.png">
+</details></p>
+
+<h2>Benchmarks</h2>
+
+<p><em>All values are the average of three runs</em></p>
+
+<ul>
+<li><a href="https://www.geekbench.com/">Geekbench 5</a>
+<ul>
+<li>Single Core: 1313.7</li>
+<li>Multicore: 8055.3</li>
+<li>OpenCL: 43650.3</li>
+<li>Metal: 38985.0</li>
+</ul></li>
+<li><a href="http://www.luxmark.info/">LuxMark LuxBall</a>: 27424.3</li>
+<li><a href="https://blog.alex4d.com/2013/10/30/brucex-a-new-fcpx-benchmark/">BruceX</a>: 6.64 seconds</li>
+<li><a href="https://www.maxon.net/en-us/products/cinebench-r20-overview/">Cinebench R20</a>: 3934</li>
+<li><a href="https://apps.apple.com/us/app/blackmagic-disk-speed-test/id425264550">Blackmagic Disk Speed Test</a> (Samsung 970 Evo)
+<ul>
+<li>Read: 2990.4 MB/s</li>
+<li>Write: 2484.2 MB/s</li>
+</ul></li>
+</ul>
+
+<h2>Issues</h2>
+
+<p><a href="https://github.com/shiruken/hackintosh/issues">See the GitHub repository issues tracker</a></p>
+
+<h2>Upgrade Log</h2>
+
+<ul>
+<li>2020-04-20: Upgraded BIOS to version <a href="https://www.gigabyte.com/us/Motherboard/Z390-AORUS-PRO-WIFI-rev-10/support#support-dl-bios">F12c</a>. See updated <a href="#bios-settings-version-f12c">BIOS Settings</a> section.</li>
+<li>2020-04-19: Enabled integrated Bluetooth functionality using <a href="https://github.com/zxystd/IntelBluetoothFirmware/releases/tag/1.0.3">IntelBluetoothFirmware 1.0.3</a>. See the <a href="#enable-bluetooth">Enable Bluetooth</a> section.</li>
+<li>2020-04-17: Upgraded to <a href="http://mackie100projects.altervista.org/download-opencore-configurator/">OpenCore Configurator v5.10.0.0</a>, <a href="https://github.com/OpenCoreHackyColor/OpenCoreBootloader/releases/tag/5112">OpenCore v5.0 r5112</a>, <a href="https://github.com/acidanthera/AppleALC/releases/tag/1.4.8">AppleALC 1.4.8</a>, <a href="https://github.com/acidanthera/Lilu/releases/tag/1.4.3">Lilu 1.4.3</a>, <a href="https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.8">WhateverGreen 1.3.8</a>, and <a href="https://github.com/acidanthera/VirtualSMC/releases/tag/1.1.2">Virtual SMC 1.1.2</a>. Upgraded to <a href="">macOS 10.15.4</a> via Software Update (Note: Requires at minimum <a href="https://github.com/OpenCoreHackyColor/OpenCoreBootloader/releases/tag/5104">OpenCore v2.5k-5104</a>).</li>
+<li>2020-02-01: Upgraded to <a href="http://mackie100projects.altervista.org/download-opencore-configurator/">OpenCore Configurator v5.9.2.1</a>, <a href="https://github.com/Dids/opencore-builder/releases/tag/v2.5k_r5103">OpenCore v2.5k_r5103</a>, <a href="https://github.com/acidanthera/AppleALC/releases/tag/1.4.5">AppleALC 1.4.5</a>, <a href="https://github.com/acidanthera/Lilu/releases/tag/1.4.1">Lilu 1.4.1</a>, <a href="https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.6">WhateverGreen 1.3.6</a>, and <a href="https://github.com/acidanthera/VirtualSMC/releases/tag/1.1.0">Virtual SMC 1.1.0</a>. Upgraded to <a href="https://support.apple.com/kb/DL2029">macOS 10.15.3</a> via Software Update.</li>
+<li>2019-12-18: Upgraded to <a href="https://support.apple.com/kb/DL2025">macOS 10.15.2</a> via Software Update</li>
+<li>2019-12-17: Upgraded to <a href="http://mackie100projects.altervista.org/download-opencore-configurator/">OpenCore Configurator v5.9.0.0</a> and <a href="https://github.com/Dids/opencore-builder/releases/tag/v2.5k_r5100">OpenCore v2.5k_r5100</a></li>
+<li>2019-12-06: Upgraded kexts to <a href="https://github.com/acidanthera/AppleALC/releases/tag/1.4.4">AppleALC 1.4.4</a>, <a href="https://github.com/acidanthera/Lilu/releases/tag/1.4.0">Lilu 1.4.0</a>, <a href="https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.5">WhateverGreen 1.3.5</a></li>
+<li>2019-11-21: Upgraded to <a href="https://github.com/Dids/opencore-builder/releases/tag/v2.5k_r5099">OpenCore v2.5k_r5099</a></li>
+</ul>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/">u/corpnewt's r/Hackintosh Vanilla Desktop Guide</a></li>
+<li><a href="https://www.tonymacx86.com/threads/an-idiots-guide-to-lilu-and-its-plug-ins.260063/">An iDiot's Guide To Lilu and its Plug-ins</a></li>
+<li><a href="https://www.tonymacx86.com/threads/guide-intel-framebuffer-patching-using-whatevergreen.256490/">[Guide] Intel Framebuffer patching using WhateverGreen</a></li>
+<li><a href="https://www.insanelymac.com/forum/topic/337837-glasgoods-macos-mojave-successguide-for-aorus-z390-pro/">Glasgood's macOS Mojave [SUCCESS][GUIDE] for Aorus Z390 Pro</a></li>
+<li><a href="https://www.tonymacx86.com/threads/success-gigabyte-designare-z390-thunderbolt-3-i7-9700k-amd-rx-580.267551/">[SUCCESS] Gigabyte Designare Z390 (Thunderbolt 3) + i7-9700K + AMD RX 580</a></li>
+<li><a href="https://www.reddit.com/r/hackintosh/comments/dpu4by/general_z390_catalina_guide_or_why_you_should/">General Z390 Catalina Guide, or why you should take the time to set things from scratch (bonus 5700 XT guide)</a></li>
+<li><a href="https://www.youtube.com/watch?v=j3V7szXZZTc">How to fix USB 3 ports on a Hackintosh by generating your own SSDT or USBMap.kext</a></li>
+<li><a href="https://www.tonymacx86.com/threads/filevault2-boot-issues-with-opencore-under-macos-catalina.285697/#post-2021159">FileVault2 boot issues with OpenCore under macOS Catalina</a></li>
+<li><a href="https://fewtarius.gitbook.io/laptopguide/extras/enabling-filevault">Enabling FileVault - The Vanilla Laptop Guide</a></li>
+<li><a href="https://www.tonymacx86.com/threads/solved-opencore-shows-two-boot-options-for-windows-efi.243457/">[Solved] OpenCore shows two boot options for Windows EFI</a></li>
+<li><a href="https://discussions.apple.com/docs/DOC-7942">Prevent a volume from mounting at startup</a></li>
+</ul>
+
+<h2>Resources</h2>
+
+<ul>
+<li><a href="http://mackie100projects.altervista.org/download-opencore-configurator/">OpenCore Configurator Global Edition</a></li>
+<li><a href="https://www.insanelymac.com/forum/topic/302674-opencore-theme-manager/">OpenCore Theme Manager</a></li>
+<li><a href="https://www.insanelymac.com/forum/topic/335018-hackintool-v286/">Hackintool</a></li>
+<li><a href="https://github.com/acidanthera/MacInfoPkg">MacInfoPkg (macserial)</a></li>
+<li><a href="https://github.com/corpnewt/USBMap">USBMap</a></li>
+</ul>

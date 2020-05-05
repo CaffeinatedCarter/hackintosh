@@ -4,7 +4,7 @@ Tracking the progress of my OpenCore Hackintosh build. Currently dual-booting ma
 * [`EFI`](EFI/): Copy of current EFI directory from the macOS boot drive
 * [`EFI_Install`](EFI_Install/): Copy of EFI directory from the USB drive used during macOS installation
 
-![System Overview](Screenshots/SysInfo.png)
+![System Overview](Screenshots/sysinfo.png) ![NeoFetch](Screenshots/neofetch.png)
 
 ## Table of Contents
 
