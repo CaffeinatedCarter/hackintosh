@@ -1,10 +1,10 @@
-# Hackintosh v3
-Installation guide for my vanilla Hackintosh v3 build dual-booting macOS Catalina and Windows 10. The version numbers reported in this guide were the releases available at the time of installation and more than likely can be replaced with the latest iteration.
+# Hackintosh (2020)
+Tracking the progress of my OpenCore Hackintosh build. Currently dual-booting macOS Catalina and Windows 10.
 
 * [`EFI`](EFI/): Copy of current EFI directory from the macOS boot drive
 * [`EFI_install`](EFI_install/): Copy of EFI directory from the USB drive used during macOS installation
 
-![System Overview](Screenshots/System.png)
+![System Overview](Screenshots/SysInfo.png)
 
 ## Table of Contents
 
@@ -37,20 +37,21 @@ Installation guide for my vanilla Hackintosh v3 build dual-booting macOS Catalin
 
 ## The Build
 
-* **CPU:** Intel Core i7-9700K
-* **CPU Cooler:** Corsair H100i PRO (Connected to CPU_FAN and F_USB2)
-* **Motherboard:** Gigabyte Z390 AORUS PRO WIFI
-* **Memory:** Corsair Vengeance RGB Pro 16 GB DDR4-3600
-* **Storage (macOS):** Samsung 970 Evo 1 TB M.2 NVME SSD (M2A Slot)
-* **Storage (Windows):** Intel 660p Series 1 TB M.2 NVME SSD (M2M Slot)
-* **Video Card:** Gigabyte Radeon RX 5700 XT 8 GB GAMING OC
-* **Power Supply:** Corsair RM650 80+ Gold
-* **Case:** NZXT H510
-* **Monitor:** Dell S2719DGF 27" LED QHD FreeSync Monitor
-* **Keyboard:** Das Keyboard Model S Professional
-* **Mouse:** Logitech G603
+* **CPU:** AMD Ryzen 7 3700X 
+* **CPU Cooler:** Cooler Master Hyper 212 EVO (Connected to CPU_FAN)
+* **Motherboard:** Gigabyte B450 AORUS PRO WIFI (rev. 1.0)
+* **Memory:** G.Skill Trident Z RGB 16 GB DDR4-3000
+* **Storage (macOS):** Western Digital Blue 500GB M.2 SSD
+* **Storage (Windows):** Samsung 970 Evo 500GB M.2 NVME SSD
+* **Video Card:** ASRock Radeon RX 5700 XT 8 GB
+* **Power Supply:** Rosewill 550W 80+ Gold
+* **Case:** Fractal Design Meshify C
+* **Monitor:** MSI Optix MAG241C 23.6" FHD 144Hz FreeSync Monitor
+* **Monitor:** AOC CQ27G1 27.0" QHD 144Hz FreeSync Monitor
+* **Keyboard:** Logitech G413 Carbon
+* **Mouse:** Logitech G502 HERO
 
-View the build on PCPartPicker: https://pcpartpicker.com/list/kBK7TC
+View the build on PCPartPicker: https://pcpartpicker.com/list/nppTDx
 
 ## Prepare Install Media
 
