@@ -10,9 +10,9 @@ Tracking the progress of my OpenCore Hackintosh build. Currently dual-booting ma
 
 * [The Build](#the-build)
 * [Prepare Install Media](#prepare-install-media)
-* [Install Clover](#install-clover)
+* [Install OpenCore](#install-opencore)
 * [Gather Kexts](#gather-kexts)
-* [Configure Clover](#configure-clover)
+* [Configure OpenCore](#configure-opencore)
 * [BIOS Settings](#bios-settings-version-f12c)
 * [Prepare for macOS Installation](#prepare-for-macos-installation)
 * [Install macOS Catalina](#install-macos-catalina)
@@ -25,10 +25,8 @@ Tracking the progress of my OpenCore Hackintosh build. Currently dual-booting ma
   * [Enable TRIM for Solid State Drives](#enable-trim-for-solid-state-drives)
   * [Fix CPU Type in About This Mac](#fix-cpu-type-in-about-this-mac)
   * [Fix Memory Tab in About This Mac](#fix-memory-tab-in-about-this-mac)
-  * [Install Clover Theme](#install-clover-theme)
-* [Install Windows 10](#install-windows-10)
 * [Final BIOS Settings](#final-bios-settings)
-* [Final Clover Configuration](#final-clover-configuration)
+* [Final OpenCore Configuration](#final-opencore-configuration)
 * [Benchmarks](#benchmarks)
 * [Issues](#issues)
 * [Upgrade Log](#upgrade-log)
@@ -67,12 +65,12 @@ View the build on PCPartPicker: https://pcpartpicker.com/list/nppTDx
 
 4. Once the program finishes, your USB drive should now be called `Install macOS Catalina`
 
-## Install Clover
+## Install OpenCore
 
-* Download [Clover Install Package](https://github.com/Dids/clover-builder/releases) (v2.5k_r5097) and [Clover Configurator Global Edition](http://mackie100projects.altervista.org/download-clover-configurator/) (v5.7.0.0)
-* Install Clover to the USB device and customize with the following options:
-  * Clover for UEFI booting only
-  * Install Clover in the ESP
+* Download [OpenCore Install Package](https://github.com/Dids/opencore-builder/releases) (v2.5k_r5097) and [OpenCore Configurator Global Edition](http://mackie100projects.altervista.org/download-opencore-configurator/) (v5.7.0.0)
+* Install OpenCore to the USB device and customize with the following options:
+  * OpenCore for UEFI booting only
+  * Install OpenCore in the ESP
   * UEFI Drivers
     * Recommended drivers
       * ApfsDriverLoader
@@ -93,64 +91,64 @@ View the build on PCPartPicker: https://pcpartpicker.com/list/nppTDx
   * SMCSuperIO.kext
 * [WhateverGreen.kext](https://github.com/acidanthera/WhateverGreen/releases) (v1.3.4)
 
-1. Use Clover Configurator to mount the EFI partition of the USB drive
+1. Use OpenCore Configurator to mount the EFI partition of the USB drive
 2. Copy the downloaded .kexts to `EFI/CLOVER/kexts/Other/` on the USB drive EFI partition
 3. Copy `VirtualSmc.efi` to `EFI/CLOVER/drivers/UEFI/` on the USB drive EFI partition
 
 The exact kexts and drivers I used during my installation can be found in [`EFI_install/`](EFI_install/).
 
-## Configure Clover
+## Configure OpenCore
 
-The Clover configuration for the installation is heavily based upon corpnewt's [r/Hackintosh Vanilla Desktop Guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/) for the [Coffee Lake](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/config.plist-per-hardware/coffee-lake) microarchitecture. The major difference is with how the iGPU is enabled because I encountered difficulties when using device property injections. Each section of the configuration used during installation is documented below. A sanitized version of the config file can be found in [`EFI_install/CLOVER/`](EFI_install/CLOVER/). You will need to use Clover Configurator or [`macserial`](https://github.com/acidanthera/MacInfoPkg/releases) to generate a valid serial number and board serial number for the `iMac19,1`  SMBIOS.
+The OpenCore configuration for the installation is heavily based upon corpnewt's [r/Hackintosh Vanilla Desktop Guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/) for the [Coffee Lake](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/config.plist-per-hardware/coffee-lake) microarchitecture. The major difference is with how the iGPU is enabled because I encountered difficulties when using device property injections. Each section of the configuration used during installation is documented below. A sanitized version of the config file can be found in [`EFI_install/CLOVER/`](EFI_install/CLOVER/). You will need to use OpenCore Configurator or [`macserial`](https://github.com/acidanthera/MacInfoPkg/releases) to generate a valid serial number and board serial number for the `iMac19,1`  SMBIOS.
 
 <details><summary>ACPI</summary>
-  <img src="Screenshots/Install_Clover_ACPI_1.png">
-  <img src="Screenshots/Install_Clover_ACPI_2.png">
+  <img src="Screenshots/Install_OpenCore_ACPI_1.png">
+  <img src="Screenshots/Install_OpenCore_ACPI_2.png">
 </details>
  
 <details><summary>Boot</summary>
-  <img src="Screenshots/Install_Clover_Boot.png">
+  <img src="Screenshots/Install_OpenCore_Boot.png">
 </details>
 
 <details><summary>Boot Graphics</summary>
-  <img src="Screenshots/Install_Clover_BootGraphics.png">
+  <img src="Screenshots/Install_OpenCore_BootGraphics.png">
 </details>
 
 <details><summary>CPU</summary>
-  <img src="Screenshots/Install_Clover_CPU.png">
+  <img src="Screenshots/Install_OpenCore_CPU.png">
 </details>
 
 <details><summary>Devices</summary>
-  <img src="Screenshots/Install_Clover_Devices_1.png">
-  <img src="Screenshots/Install_Clover_Devices_2.png">
+  <img src="Screenshots/Install_OpenCore_Devices_1.png">
+  <img src="Screenshots/Install_OpenCore_Devices_2.png">
 </details>
 
 <details><summary>Disable Drivers</summary>
-  <img src="Screenshots/Install_Clover_DisableDrivers.png">
+  <img src="Screenshots/Install_OpenCore_DisableDrivers.png">
 </details>
 
 <details><summary>GUI</summary>
-  <img src="Screenshots/Install_Clover_GUI.png">
+  <img src="Screenshots/Install_OpenCore_GUI.png">
 </details>
 
 <details><summary>Graphics</summary>
-  <img src="Screenshots/Install_Clover_Graphics.png">
+  <img src="Screenshots/Install_OpenCore_Graphics.png">
 </details>
 
 <details><summary>Kernel and Kext Patches</summary>
-  <img src="Screenshots/Install_Clover_KernalKextPatches.png">
+  <img src="Screenshots/Install_OpenCore_KernalKextPatches.png">
 </details>
 
 <details><summary>Rt Varibles</summary>
-  <img src="Screenshots/Install_Clover_RtVariables.png">
+  <img src="Screenshots/Install_OpenCore_RtVariables.png">
 </details>
 
 <details><summary>SMBIOS</summary>
-  <img src="Screenshots/Install_Clover_SMBIOS.png">
+  <img src="Screenshots/Install_OpenCore_SMBIOS.png">
 </details>
 
 <details><summary>System Parameters</summary>
-  <img src="Screenshots/Install_Clover_SystemParameters.png">
+  <img src="Screenshots/Install_OpenCore_SystemParameters.png">
 </details>
 
 ## BIOS Settings (Version F12c)
@@ -201,15 +199,15 @@ Enter **Advanced Mode** and **Load Optimized Defaults** to reset the default BIO
 ## Install macOS Catalina
 
 1. Restart computer and select the USB drive as the default BIOS boot device 
-2. Select `Install macOS Catalina` as the Clover boot volume 
+2. Select `Install macOS Catalina` as the OpenCore boot volume 
 3. Launch Disk Utility and format the destination drive (Samsung 970 Evo)
     * Name: `Macintosh SSD`
     * Format: `Mac OS Extended (Journaled)` or `APFS` (will be reformatted as `APFS` during installation)
     * Scheme: `GUID Partition Map`
 2. Launch Install macOS and select the `Macintosh SSD` drive as the destination 
-    * As the system restarts, keep selecting `Boot macOS Install from Macintosh SSD` from the Clover menu
+    * As the system restarts, keep selecting `Boot macOS Install from Macintosh SSD` from the OpenCore menu
     * If the system freezes, use the power button to shut down the computer and turn off the power supply. Wait a few minutes before restarting to continue the installation process.
-4. Once the installation is complete, select `Boot macOS from Macintosh SSD` from the Clover menu
+4. Once the installation is complete, select `Boot macOS from Macintosh SSD` from the OpenCore menu
     * Proceed through the normal macOS setup but delay signing into iCloud until post installation is complete
     
 ## Post Installation
@@ -218,14 +216,14 @@ Enter **Advanced Mode** and **Load Optimized Defaults** to reset the default BIO
 
 1. Mount the EFI partition of `Macintosh SSD` and copy over the entire EFI directory from the USB drive
 2. Restart the computer and select the internal drive (Samsung 970 Evo) as the default BIOS boot device
-3. Select `Boot macOS from Macintosh SSD` from the Clover menu
+3. Select `Boot macOS from Macintosh SSD` from the OpenCore menu
 4. You should now have a bootable macOS installation!
 
 _Note: You can now remove the USB drive but keep it handy for debugging issues with your Hackintosh._
 
 ### Enable the Discrete Graphics Card with Headless iGPU
 
-1. Modify the Clover configuration on the EFI partition of `Macintosh SSD`
+1. Modify the OpenCore configuration on the EFI partition of `Macintosh SSD`
     * Boot
       * Remove the `-wegnoegpu` boot argument
       * Add the `agdpmod=pikera` boot argument
@@ -250,7 +248,7 @@ _Note: You can now remove the USB drive but keep it handy for debugging issues w
 
 ![Hackintool Graphics](Screenshots/Post_HackintoolGraphics.png)
 
-_Note: You should also make these changes to your USB drive Clover configuration so that it can properly boot your system if the `Macintosh SSD` EFI partition gets messed up. If you don't update the configuration, you'll have to swap back to using the integrated graphics instead of the discrete graphics card._
+_Note: You should also make these changes to your USB drive OpenCore configuration so that it can properly boot your system if the `Macintosh SSD` EFI partition gets messed up. If you don't update the configuration, you'll have to swap back to using the integrated graphics instead of the discrete graphics card._
 
 ### Map USB Ports
 
@@ -258,7 +256,7 @@ Apple's USB driver implementation restricts macOS to only 15 HS/SS ports. During
 
 _If you have the Gigabyte Z390 AORUS PRO WIFI motherboard and want the same USB port mapping I utilize, you can download my [`USBMap.kext`](EFI/CLOVER/kexts/Other/USBMap.kext), [`SSDT-USBX.aml`](EFI/CLOVER/ACPI/patched/SSDT-USBX.aml), and [`SSDT-USBX.dsl`](EFI/CLOVER/ACPI/patched/SSDT-USBX.dsl) and skip to Step 5._
 
-1. Add the `change EHC1 to EH01` and `change EHC2 to EH02` patches to the ACPI Clover configuration on the EFI partition of `Macintosh SSD` and reboot
+1. Add the `change EHC1 to EH01` and `change EHC2 to EH02` patches to the ACPI OpenCore configuration on the EFI partition of `Macintosh SSD` and reboot
 
     ![EHC1 and EHC2 patches](Screenshots/Post_USBMap_ACPI.png)
     
@@ -286,7 +284,7 @@ _If you have the Gigabyte Z390 AORUS PRO WIFI motherboard and want the same USB 
         * `USBMap.kext` → [`EFI/CLOVER/kexts/Other/`](EFI/CLOVER/kexts/Other/)
         * `SSDT-USBX.aml` → [`EFI/CLOVER/ACPI/patched/`](EFI/CLOVER/ACPI/patched/)
         * `SSDT-USBX.dsl` → [`EFI/CLOVER/ACPI/patched/`](EFI/CLOVER/ACPI/patched/)
-5. Modify the Clover configuration on the EFI partition of `Macintosh SSD`
+5. Modify the OpenCore configuration on the EFI partition of `Macintosh SSD`
     * ACPI
       * Remove the `change EHC2 to EH02` patch (not present on this system)
     * Kernel and Kext Patches
@@ -306,9 +304,9 @@ Download the [latest release](https://github.com/zxystd/IntelBluetoothFirmware/r
 
 ### Enable FileVault
 
-[FileVault](https://support.apple.com/en-us/HT204837) is used to encrypt the startup disk on your Hackintosh. Enabling it is entirely optional but probably a good idea for the security conscious, especially if you are building a portable system. Before turning on the feature, you will need to make sure you have several drivers installed to allow Clover to interact with the encrypted drive. These instructions are based on the advice from [this tonymacx86 comment](https://www.tonymacx86.com/threads/filevault2-boot-issues-with-clover-under-macos-catalina.285697/#post-2021159) and [this vanilla laptop guide](https://fewtarius.gitbook.io/laptopguide/extras/enabling-filevault).
+[FileVault](https://support.apple.com/en-us/HT204837) is used to encrypt the startup disk on your Hackintosh. Enabling it is entirely optional but probably a good idea for the security conscious, especially if you are building a portable system. Before turning on the feature, you will need to make sure you have several drivers installed to allow OpenCore to interact with the encrypted drive. These instructions are based on the advice from [this tonymacx86 comment](https://www.tonymacx86.com/threads/filevault2-boot-issues-with-opencore-under-macos-catalina.285697/#post-2021159) and [this vanilla laptop guide](https://fewtarius.gitbook.io/laptopguide/extras/enabling-filevault).
 
-1. If present, **remove** any of the following outdated Clover-installed FileVault 2 UEFI drivers:
+1. If present, **remove** any of the following outdated OpenCore-installed FileVault 2 UEFI drivers:
     * `AppleImageCodec.efi`
     * `AppleKeyAggregator.efi`
     * `AppleKeyFeeder.efi`
@@ -318,7 +316,7 @@ Download the [latest release](https://github.com/zxystd/IntelBluetoothFirmware/r
 2. Download [AppleSupportPkg v2.0.9](https://github.com/acidanthera/AppleSupportPkg/releases/tag/2.0.9) and copy the following two drivers to `EFI/CLOVER/drivers/UEFI/`:
     * `AppleGenericInput.efi`
     * `AppleUiSupport.efi`
-3. Modify the Clover configuration on the EFI partition of `Macintosh SSD`
+3. Modify the OpenCore configuration on the EFI partition of `Macintosh SSD`
     * Boot
       * Default Boot Volume  →  `Preboot`
     * GUI
@@ -331,7 +329,7 @@ Download the [latest release](https://github.com/zxystd/IntelBluetoothFirmware/r
     
 5. Restart your system, which should now default to the `FileVault Preboot from Preboot` option, and enter your password at login to decrypt the system drive.
 
-_Note: You should also make these changes to your USB drive Clover configuration so that it can properly boot your system if the `Macintosh SSD` EFI partition gets messed up. If you don't update the configuration, then the Clover bootloader will not be able to properly handle the FileVault-encrypted drive._
+_Note: You should also make these changes to your USB drive OpenCore configuration so that it can properly boot your system if the `Macintosh SSD` EFI partition gets messed up. If you don't update the configuration, then the OpenCore bootloader will not be able to properly handle the FileVault-encrypted drive._
 
 ### Enable TRIM for Solid State Drives
 
@@ -345,13 +343,13 @@ _Note: You should also make these changes to your USB drive Clover configuration
 
 ### Fix CPU Type in About This Mac
 
-For some reason, About This Mac and System Report do not properly identify the processor and list it as an 'Intel Core i9' instead of an 'Intel Core i7.' This can easily be fixed by using Clover Configurator to set the CPU Type to `0x0705` and rebooting.
+For some reason, About This Mac and System Report do not properly identify the processor and list it as an 'Intel Core i9' instead of an 'Intel Core i7.' This can easily be fixed by using OpenCore Configurator to set the CPU Type to `0x0705` and rebooting.
 
 ![Before/After About This Mac - CPU](Screenshots/Post_CPUType.png)
 
 ### Fix Memory Tab in About This Mac
 
-The default `iMac19,1` SMBIOS configuration used in this build sets `PlatformFeature=0x22`, which indicates that the system lacks user-upgradable memory and therefore hides the Memory tab on About This Mac (as seen above) and any empty memory slots in the System Report. This can easily be fixed by using Clover Configurator to set `PlatformFeature=0x20` in the `SMBIOS` section and rebooting.
+The default `iMac19,1` SMBIOS configuration used in this build sets `PlatformFeature=0x22`, which indicates that the system lacks user-upgradable memory and therefore hides the Memory tab on About This Mac (as seen above) and any empty memory slots in the System Report. This can easily be fixed by using OpenCore Configurator to set `PlatformFeature=0x20` in the `SMBIOS` section and rebooting.
 
 ![Before/After About This Mac - Memory](Screenshots/Post_PlatformFeature.png)
 
@@ -413,58 +411,58 @@ Screenshots of my current BIOS settings on my working (i.e. stable) system.
 </details>
 
 
-## Final Clover Configuration
+## Final OpenCore Configuration
 
-A sanitized version of my final config file can be found in [`EFI/CLOVER/`](EFI/CLOVER/). Each section of the configuration in Clover Configurator is also documented below.
+A sanitized version of my final config file can be found in [`EFI/CLOVER/`](EFI/CLOVER/). Each section of the configuration in OpenCore Configurator is also documented below.
 
 <details><summary>ACPI</summary>
-  <img src="Screenshots/Post_Clover_ACPI_1.png">
-  <img src="Screenshots/Post_Clover_ACPI_2.png">
+  <img src="Screenshots/Post_OpenCore_ACPI_1.png">
+  <img src="Screenshots/Post_OpenCore_ACPI_2.png">
 </details>
  
 <details><summary>Boot</summary>
-  <img src="Screenshots/Post_Clover_Boot.png">
+  <img src="Screenshots/Post_OpenCore_Boot.png">
 </details>
 
 <details><summary>Boot Graphics</summary>
-  <img src="Screenshots/Post_Clover_BootGraphics.png">
+  <img src="Screenshots/Post_OpenCore_BootGraphics.png">
 </details>
 
 <details><summary>CPU</summary>
-  <img src="Screenshots/Post_Clover_CPU.png">
+  <img src="Screenshots/Post_OpenCore_CPU.png">
 </details>
 
 <details><summary>Devices</summary>
-  <img src="Screenshots/Post_Clover_Devices_1.png">
-  <img src="Screenshots/Post_Clover_Devices_2.png">
+  <img src="Screenshots/Post_OpenCore_Devices_1.png">
+  <img src="Screenshots/Post_OpenCore_Devices_2.png">
 </details>
 
 <details><summary>Disable Drivers</summary>
-  <img src="Screenshots/Post_Clover_DisableDrivers.png">
+  <img src="Screenshots/Post_OpenCore_DisableDrivers.png">
 </details>
 
 <details><summary>GUI</summary>
-  <img src="Screenshots/Post_Clover_GUI.png">
+  <img src="Screenshots/Post_OpenCore_GUI.png">
 </details>
 
 <details><summary>Graphics</summary>
-  <img src="Screenshots/Post_Clover_Graphics.png">
+  <img src="Screenshots/Post_OpenCore_Graphics.png">
 </details>
 
 <details><summary>Kernel and Kext Patches</summary>
-  <img src="Screenshots/Post_Clover_KernalKextPatches.png">
+  <img src="Screenshots/Post_OpenCore_KernalKextPatches.png">
 </details>
 
 <details><summary>Rt Varibles</summary>
-  <img src="Screenshots/Post_Clover_RtVariables.png">
+  <img src="Screenshots/Post_OpenCore_RtVariables.png">
 </details>
 
 <details><summary>SMBIOS</summary>
-  <img src="Screenshots/Post_Clover_SMBIOS.png">
+  <img src="Screenshots/Post_OpenCore_SMBIOS.png">
 </details>
 
 <details><summary>System Parameters</summary>
-  <img src="Screenshots/Post_Clover_SystemParameters.png">
+  <img src="Screenshots/Post_OpenCore_SystemParameters.png">
 </details>
 
 ## Benchmarks
@@ -491,12 +489,12 @@ _All values are the average of three runs_
 
 * 2020-04-20: Upgraded BIOS to version [F12c](https://www.gigabyte.com/us/Motherboard/Z390-AORUS-PRO-WIFI-rev-10/support#support-dl-bios). See updated [BIOS Settings](#bios-settings-version-f12c) section.
 * 2020-04-19: Enabled integrated Bluetooth functionality using [IntelBluetoothFirmware 1.0.3](https://github.com/zxystd/IntelBluetoothFirmware/releases/tag/1.0.3). See the [Enable Bluetooth](#enable-bluetooth) section.
-* 2020-04-17: Upgraded to [Clover Configurator v5.10.0.0](http://mackie100projects.altervista.org/download-clover-configurator/), [Clover v5.0 r5112](https://github.com/CloverHackyColor/CloverBootloader/releases/tag/5112), [AppleALC 1.4.8](https://github.com/acidanthera/AppleALC/releases/tag/1.4.8), [Lilu 1.4.3](https://github.com/acidanthera/Lilu/releases/tag/1.4.3), [WhateverGreen 1.3.8](https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.8), and [Virtual SMC 1.1.2](https://github.com/acidanthera/VirtualSMC/releases/tag/1.1.2). Upgraded to [macOS 10.15.4]() via Software Update (Note: Requires at minimum [Clover v2.5k-5104](https://github.com/CloverHackyColor/CloverBootloader/releases/tag/5104)).
-* 2020-02-01: Upgraded to [Clover Configurator v5.9.2.1](http://mackie100projects.altervista.org/download-clover-configurator/), [Clover v2.5k_r5103](https://github.com/Dids/clover-builder/releases/tag/v2.5k_r5103), [AppleALC 1.4.5](https://github.com/acidanthera/AppleALC/releases/tag/1.4.5), [Lilu 1.4.1](https://github.com/acidanthera/Lilu/releases/tag/1.4.1), [WhateverGreen 1.3.6](https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.6), and [Virtual SMC 1.1.0](https://github.com/acidanthera/VirtualSMC/releases/tag/1.1.0). Upgraded to [macOS 10.15.3](https://support.apple.com/kb/DL2029) via Software Update.
+* 2020-04-17: Upgraded to [OpenCore Configurator v5.10.0.0](http://mackie100projects.altervista.org/download-opencore-configurator/), [OpenCore v5.0 r5112](https://github.com/OpenCoreHackyColor/OpenCoreBootloader/releases/tag/5112), [AppleALC 1.4.8](https://github.com/acidanthera/AppleALC/releases/tag/1.4.8), [Lilu 1.4.3](https://github.com/acidanthera/Lilu/releases/tag/1.4.3), [WhateverGreen 1.3.8](https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.8), and [Virtual SMC 1.1.2](https://github.com/acidanthera/VirtualSMC/releases/tag/1.1.2). Upgraded to [macOS 10.15.4]() via Software Update (Note: Requires at minimum [OpenCore v2.5k-5104](https://github.com/OpenCoreHackyColor/OpenCoreBootloader/releases/tag/5104)).
+* 2020-02-01: Upgraded to [OpenCore Configurator v5.9.2.1](http://mackie100projects.altervista.org/download-opencore-configurator/), [OpenCore v2.5k_r5103](https://github.com/Dids/opencore-builder/releases/tag/v2.5k_r5103), [AppleALC 1.4.5](https://github.com/acidanthera/AppleALC/releases/tag/1.4.5), [Lilu 1.4.1](https://github.com/acidanthera/Lilu/releases/tag/1.4.1), [WhateverGreen 1.3.6](https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.6), and [Virtual SMC 1.1.0](https://github.com/acidanthera/VirtualSMC/releases/tag/1.1.0). Upgraded to [macOS 10.15.3](https://support.apple.com/kb/DL2029) via Software Update.
 * 2019-12-18: Upgraded to [macOS 10.15.2](https://support.apple.com/kb/DL2025) via Software Update
-* 2019-12-17: Upgraded to [Clover Configurator v5.9.0.0](http://mackie100projects.altervista.org/download-clover-configurator/) and [Clover v2.5k_r5100](https://github.com/Dids/clover-builder/releases/tag/v2.5k_r5100)
+* 2019-12-17: Upgraded to [OpenCore Configurator v5.9.0.0](http://mackie100projects.altervista.org/download-opencore-configurator/) and [OpenCore v2.5k_r5100](https://github.com/Dids/opencore-builder/releases/tag/v2.5k_r5100)
 * 2019-12-06: Upgraded kexts to [AppleALC 1.4.4](https://github.com/acidanthera/AppleALC/releases/tag/1.4.4), [Lilu 1.4.0](https://github.com/acidanthera/Lilu/releases/tag/1.4.0), [WhateverGreen 1.3.5](https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.5)
-* 2019-11-21: Upgraded to [Clover v2.5k_r5099](https://github.com/Dids/clover-builder/releases/tag/v2.5k_r5099)
+* 2019-11-21: Upgraded to [OpenCore v2.5k_r5099](https://github.com/Dids/opencore-builder/releases/tag/v2.5k_r5099)
 
 ## References
 
@@ -507,15 +505,15 @@ _All values are the average of three runs_
 * [[SUCCESS] Gigabyte Designare Z390 (Thunderbolt 3) + i7-9700K + AMD RX 580](https://www.tonymacx86.com/threads/success-gigabyte-designare-z390-thunderbolt-3-i7-9700k-amd-rx-580.267551/)
 * [General Z390 Catalina Guide, or why you should take the time to set things from scratch (bonus 5700 XT guide)](https://www.reddit.com/r/hackintosh/comments/dpu4by/general_z390_catalina_guide_or_why_you_should/)
 * [How to fix USB 3 ports on a Hackintosh by generating your own SSDT or USBMap.kext](https://www.youtube.com/watch?v=j3V7szXZZTc)
-* [FileVault2 boot issues with Clover under macOS Catalina](https://www.tonymacx86.com/threads/filevault2-boot-issues-with-clover-under-macos-catalina.285697/#post-2021159)
+* [FileVault2 boot issues with OpenCore under macOS Catalina](https://www.tonymacx86.com/threads/filevault2-boot-issues-with-opencore-under-macos-catalina.285697/#post-2021159)
 * [Enabling FileVault - The Vanilla Laptop Guide](https://fewtarius.gitbook.io/laptopguide/extras/enabling-filevault)
-* [[Solved] Clover shows two boot options for Windows EFI](https://www.tonymacx86.com/threads/solved-clover-shows-two-boot-options-for-windows-efi.243457/)
+* [[Solved] OpenCore shows two boot options for Windows EFI](https://www.tonymacx86.com/threads/solved-opencore-shows-two-boot-options-for-windows-efi.243457/)
 * [Prevent a volume from mounting at startup](https://discussions.apple.com/docs/DOC-7942)
 
 ## Resources
 
-* [Clover Configurator Global Edition](http://mackie100projects.altervista.org/download-clover-configurator/)
-* [Clover Theme Manager](https://www.insanelymac.com/forum/topic/302674-clover-theme-manager/)
+* [OpenCore Configurator Global Edition](http://mackie100projects.altervista.org/download-opencore-configurator/)
+* [OpenCore Theme Manager](https://www.insanelymac.com/forum/topic/302674-opencore-theme-manager/)
 * [Hackintool](https://www.insanelymac.com/forum/topic/335018-hackintool-v286/)
 * [MacInfoPkg (macserial)](https://github.com/acidanthera/MacInfoPkg)
 * [USBMap](https://github.com/corpnewt/USBMap)
