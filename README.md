@@ -54,102 +54,39 @@ View the build on PCPartPicker: https://pcpartpicker.com/list/nppTDx
 
 ## Prepare Install Media
 
-1. Download the [macOS Catalina installer](https://apps.apple.com/us/app/macos-catalina/id1466841314?mt=12) (v10.15.1) from the Mac App Store
-2. Open Terminal and format the target USB drive as with the following command:
+Follow the guide at [Dortania OpenCore Desktop Guide](https://dortania.github.io/OpenCore-Desktop-Guide/installer-guide/). When it doubt, start there!
 
-    `diskutil partitionDisk /dev/{YOUR_DISK_ID} GPT JHFS+ "USB" 100%`
-    
-3. [Create the bootable macOS installer](https://support.apple.com/sl-si/HT201372): 
-
-    `sudo /Applications/Install\ macOS\ Catalina.app/Contents/Resources/createinstallmedia --volume /Volumes/USB`
-
-4. Once the program finishes, your USB drive should now be called `Install macOS Catalina`
 
 ## Install OpenCore
 
-* Download [OpenCore Install Package](https://github.com/Dids/opencore-builder/releases) (v2.5k_r5097) and [OpenCore Configurator Global Edition](http://mackie100projects.altervista.org/download-opencore-configurator/) (v5.7.0.0)
-* Install OpenCore to the USB device and customize with the following options:
-  * OpenCore for UEFI booting only
-  * Install OpenCore in the ESP
-  * UEFI Drivers
-    * Recommended drivers
-      * ApfsDriverLoader
-      * HFSPlus
-    * Memory fix drivers
-      * OsxAptioFix3Drv
-    * Additional drivers
-      * EmuVariableUefi
- 
+* Download [OpenCore Release Package](https://github.com/acidanthera/OpenCorePkg/releases/) (v0.5.8)
+* Place OpenCore on the USB device and customize with the following options:
+  * Remove from Drivers:
+    * OpenUsbKbDxe.efi
+    * UsbMouseDxe.efi
+    * NvmExpressDxe.efi
+    * XhciDxe.efi
+    * HiiDatabase.efi
+    * Ps2KeyboardDxe.efi + Ps2MouseDxe.efi
+  * Remove everything from Tools
+   
 ## Gather Kexts
 
 * [AppleALC.kext](https://github.com/acidanthera/AppleALC/releases) (v1.4.3)
-* [IntelMausiEthernet.kext](https://onedrive.live.com/?authkey=%21APjCyRpzoAKp4xs&id=FE4038DA929BFB23%21455134&cid=FE4038DA929BFB23) (v2.5.0)
+* [AppleMCEReporterDisabler.kext](https://files.amd-osx.com/AppleMCEReporterDisabler.kext.zip)
 * [Lilu.kext](https://github.com/acidanthera/Lilu/releases) (v1.3.9)
-* [USBInjectAll.kext](https://bitbucket.org/RehabMan/os-x-usb-inject-all/downloads/) (v0.7.1)
+* [NVMeFix.kext](https://github.com/acidanthera/NVMeFix/releases) (v1.0.2)
+* [SmallTreeIntel82576.kext](https://github.com/khronokernel/SmallTree-I211-AT-patch/releases) (v1.3.0)
 * [VirtualSMC.kext](https://github.com/acidanthera/VirtualSMC/releases) (v1.0.9)
-  * SMCProcessor.kext
-  * SMCSuperIO.kext
 * [WhateverGreen.kext](https://github.com/acidanthera/WhateverGreen/releases) (v1.3.4)
 
-1. Use OpenCore Configurator to mount the EFI partition of the USB drive
-2. Copy the downloaded .kexts to `EFI/CLOVER/kexts/Other/` on the USB drive EFI partition
-3. Copy `VirtualSmc.efi` to `EFI/CLOVER/drivers/UEFI/` on the USB drive EFI partition
+
 
 The exact kexts and drivers I used during my installation can be found in [`EFI_install/`](EFI_install/).
 
 ## Configure OpenCore
 
-The OpenCore configuration for the installation is heavily based upon corpnewt's [r/Hackintosh Vanilla Desktop Guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/) for the [Coffee Lake](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/config.plist-per-hardware/coffee-lake) microarchitecture. The major difference is with how the iGPU is enabled because I encountered difficulties when using device property injections. Each section of the configuration used during installation is documented below. A sanitized version of the config file can be found in [`EFI_install/CLOVER/`](EFI_install/CLOVER/). You will need to use OpenCore Configurator or [`macserial`](https://github.com/acidanthera/MacInfoPkg/releases) to generate a valid serial number and board serial number for the `iMac19,1`  SMBIOS.
-
-<details><summary>ACPI</summary>
-  <img src="Screenshots/Install_OpenCore_ACPI_1.png">
-  <img src="Screenshots/Install_OpenCore_ACPI_2.png">
-</details>
- 
-<details><summary>Boot</summary>
-  <img src="Screenshots/Install_OpenCore_Boot.png">
-</details>
-
-<details><summary>Boot Graphics</summary>
-  <img src="Screenshots/Install_OpenCore_BootGraphics.png">
-</details>
-
-<details><summary>CPU</summary>
-  <img src="Screenshots/Install_OpenCore_CPU.png">
-</details>
-
-<details><summary>Devices</summary>
-  <img src="Screenshots/Install_OpenCore_Devices_1.png">
-  <img src="Screenshots/Install_OpenCore_Devices_2.png">
-</details>
-
-<details><summary>Disable Drivers</summary>
-  <img src="Screenshots/Install_OpenCore_DisableDrivers.png">
-</details>
-
-<details><summary>GUI</summary>
-  <img src="Screenshots/Install_OpenCore_GUI.png">
-</details>
-
-<details><summary>Graphics</summary>
-  <img src="Screenshots/Install_OpenCore_Graphics.png">
-</details>
-
-<details><summary>Kernel and Kext Patches</summary>
-  <img src="Screenshots/Install_OpenCore_KernalKextPatches.png">
-</details>
-
-<details><summary>Rt Varibles</summary>
-  <img src="Screenshots/Install_OpenCore_RtVariables.png">
-</details>
-
-<details><summary>SMBIOS</summary>
-  <img src="Screenshots/Install_OpenCore_SMBIOS.png">
-</details>
-
-<details><summary>System Parameters</summary>
-  <img src="Screenshots/Install_OpenCore_SystemParameters.png">
-</details>
+The OpenCore configuration for the installation is heavily based upon the dortania guide for the [Zen](https://dortania.github.io/OpenCore-Desktop-Guide/AMD/zen.html) microarchitecture. A sanitized version of the config file can be found in [`EFI_install/OC/config.plist`](EFI_install/OC/config.plist). You will need to use [`GenSMBIOS`](https://github.com/corpnewt/GenSMBIOS) to generate a valid serial number and board serial number for the `iMacPro1,1` SMBIOS.
 
 ## BIOS Settings (Version F12c)
 
