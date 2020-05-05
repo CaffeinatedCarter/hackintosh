@@ -2,7 +2,7 @@
 Tracking the progress of my OpenCore Hackintosh build. Currently dual-booting macOS Catalina and Windows 10.
 
 * [`EFI`](EFI/): Copy of current EFI directory from the macOS boot drive
-* [`EFI_install`](EFI_install/): Copy of EFI directory from the USB drive used during macOS installation
+* [`EFI_Install`](EFI_Install/): Copy of EFI directory from the USB drive used during macOS installation
 
 ![System Overview](Screenshots/SysInfo.png)
 
