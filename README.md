@@ -355,34 +355,6 @@ The default `iMac19,1` SMBIOS configuration used in this build sets `PlatformFea
 
 ![Before/After About This Mac - Memory](Screenshots/Post_PlatformFeature.png)
 
-### Install Clover Theme
-
-The easiest way to download and install third-party Clover themes is using [Clover Theme Manager](https://www.insanelymac.com/forum/topic/302674-clover-theme-manager/). 
-
-1. Launch the application and enter your password when prompted to mount the EFI partition of `Macintosh SSD`.
-2. Click the `Install` button on the list of available themes to download the theme to your `EFI/CLOVER/themes/` directory. 3. Select the theme to use during boot via the drop-down menu or manually entering the name in the `Theme` field on the `GUI` section of Clover Configurator. 
-
-![Clover Theme Manager](Screenshots/Post_Theme.png)
-
-## Install Windows 10
-
-Windows 10 will be installed on the Intel 660p Series NVMe drive located in the M2M slot of the motherboard. This is necessary [to avoid issues](https://www.tonymacx86.com/threads/success-gigabyte-designare-z390-thunderbolt-3-i7-9700k-amd-rx-580.267551/page-496#post-1971606) with Windows updates interferring with the Clover EFI partition because of drive enumeration ordering. The installation requires at least an 8 GB USB flash drive for creating the bootable Windows installer.
-
-1. Download the [Windows 10 ISO](https://www.microsoft.com/en-us/software-download/windows10ISO)
-2. Create the bootable Windows installer:
-    * If using macOS, launch Boot Camp Assistant and follow the process to create the `Windows 7 or later version install disk`
-    * If using Windows, use the [Media Creation Tool](https://www.microsoft.com/software-download/windows10) or [Rufus](https://rufus.ie/) to flash the ISO
-3. Shut down the system and temporarily remove all other storage devices to avoid issues during installation.
-4. Restart the computer and select the installer USB drive as the default BIOS boot device.
-5. Follow the instructions to install Windows
-    * You may need to format the destination drive (Intel 660p Series) prior to installation
-6. Once installation is complete, shut down the computer, replace all the removed drives, and select the Clover EFI drive (Samsung 970 Evo) as the default BIOS boot device.
-7. You should now have a Hackintosh dual-booting macOS and Windows! Just select the desired operating system from the Clover bootloader.
-    * My [configuration](EFI/CLOVER/config.plist) defaults to booting macOS after a short five-second delay
-    * If there is an extraneous `Boot Windows from EFI` option on the bootloader, [check and uncheck the Legacy Scan option](https://www.tonymacx86.com/threads/solved-clover-shows-two-boot-options-for-windows-efi.243457/) on the GUI section of Clover Configurator. 
-    
-![Clover Bootloader](Screenshots/Post_Windows.png)
-
 ### Hide Windows Drive in macOS
     
 Follow [these instructions](https://discussions.apple.com/docs/DOC-7942) to prevent the Windows drive from automatically mounting in macOS:
