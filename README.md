@@ -52,6 +52,11 @@ Tracking the progress of my OpenCore Hackintosh build. Currently dual-booting ma
 
 View the build on PCPartPicker: https://pcpartpicker.com/list/nppTDx
 
+## To-Do
+* Update to OpenCore 0.6.0
+* Fix CPU staying on while sleeping
+* Troubleshoot Unlock with Apple Watch, Airdrop
+
 ## Prepare Install Media
 
 Follow the guide at [Dortania OpenCore Desktop Guide](https://dortania.github.io/OpenCore-Desktop-Guide/installer-guide/). When it doubt, start there!
