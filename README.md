@@ -426,21 +426,15 @@ _All values are the average of three runs_
 
 ## Issues
 
-[See the GitHub repository issues tracker](https://github.com/shiruken/hackintosh/issues)
+[See the GitHub repository issues tracker](https://github.com/CarterLiebman/hackintosh/issues)
 
 ## Upgrade Log
 
-* 2020-04-20: Upgraded BIOS to version [F12c](https://www.gigabyte.com/us/Motherboard/Z390-AORUS-PRO-WIFI-rev-10/support#support-dl-bios). See updated [BIOS Settings](#bios-settings-version-f12c) section.
-* 2020-04-19: Enabled integrated Bluetooth functionality using [IntelBluetoothFirmware 1.0.3](https://github.com/zxystd/IntelBluetoothFirmware/releases/tag/1.0.3). See the [Enable Bluetooth](#enable-bluetooth) section.
-* 2020-04-17: Upgraded to [OpenCore Configurator v5.10.0.0](http://mackie100projects.altervista.org/download-opencore-configurator/), [OpenCore v5.0 r5112](https://github.com/OpenCoreHackyColor/OpenCoreBootloader/releases/tag/5112), [AppleALC 1.4.8](https://github.com/acidanthera/AppleALC/releases/tag/1.4.8), [Lilu 1.4.3](https://github.com/acidanthera/Lilu/releases/tag/1.4.3), [WhateverGreen 1.3.8](https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.8), and [Virtual SMC 1.1.2](https://github.com/acidanthera/VirtualSMC/releases/tag/1.1.2). Upgraded to [macOS 10.15.4]() via Software Update (Note: Requires at minimum [OpenCore v2.5k-5104](https://github.com/OpenCoreHackyColor/OpenCoreBootloader/releases/tag/5104)).
-* 2020-02-01: Upgraded to [OpenCore Configurator v5.9.2.1](http://mackie100projects.altervista.org/download-opencore-configurator/), [OpenCore v2.5k_r5103](https://github.com/Dids/opencore-builder/releases/tag/v2.5k_r5103), [AppleALC 1.4.5](https://github.com/acidanthera/AppleALC/releases/tag/1.4.5), [Lilu 1.4.1](https://github.com/acidanthera/Lilu/releases/tag/1.4.1), [WhateverGreen 1.3.6](https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.6), and [Virtual SMC 1.1.0](https://github.com/acidanthera/VirtualSMC/releases/tag/1.1.0). Upgraded to [macOS 10.15.3](https://support.apple.com/kb/DL2029) via Software Update.
-* 2019-12-18: Upgraded to [macOS 10.15.2](https://support.apple.com/kb/DL2025) via Software Update
-* 2019-12-17: Upgraded to [OpenCore Configurator v5.9.0.0](http://mackie100projects.altervista.org/download-opencore-configurator/) and [OpenCore v2.5k_r5100](https://github.com/Dids/opencore-builder/releases/tag/v2.5k_r5100)
-* 2019-12-06: Upgraded kexts to [AppleALC 1.4.4](https://github.com/acidanthera/AppleALC/releases/tag/1.4.4), [Lilu 1.4.0](https://github.com/acidanthera/Lilu/releases/tag/1.4.0), [WhateverGreen 1.3.5](https://github.com/acidanthera/WhateverGreen/releases/tag/1.3.5)
-* 2019-11-21: Upgraded to [OpenCore v2.5k_r5099](https://github.com/Dids/opencore-builder/releases/tag/v2.5k_r5099)
+* 20.10.12 Updated OpenCore to 0.6.2
 
 ## References
 
+* https://github.com/shiruken/hackintosh
 * [u/corpnewt's r/Hackintosh Vanilla Desktop Guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/)
 * [An iDiot's Guide To Lilu and its Plug-ins](https://www.tonymacx86.com/threads/an-idiots-guide-to-lilu-and-its-plug-ins.260063/)
 * [[Guide] Intel Framebuffer patching using WhateverGreen](https://www.tonymacx86.com/threads/guide-intel-framebuffer-patching-using-whatevergreen.256490/)
