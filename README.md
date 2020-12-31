@@ -10,3 +10,4 @@
 
 ### usage
 
+[workflow screenshot.png](img/mountefi-workflow.png)
