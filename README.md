@@ -10,4 +10,4 @@
 
 ### usage
 
-![screenshot of mountefi workflow](img/mountefi-workflow.png =50%)
+![screenshot of mountefi workflow](img/mountefi-workflow.png =250)
