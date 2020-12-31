@@ -9,5 +9,4 @@
 - corpnewt's [MountEFI](https://github.com/corpnewt/MountEFI)
 
 ### usage
-
-![[screenshot of mountefi workflow|width=50%]](img/mountefi-workflow.png)
+< img src="img/mountefi-workflow.png" width="100px"/ >
