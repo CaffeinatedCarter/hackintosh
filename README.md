@@ -9,4 +9,4 @@
 - corpnewt's [MountEFI](https://github.com/corpnewt/MountEFI)
 
 ### usage
-<img src="https://github.com/CarterLiebman/hackintosh/blob/scripts/img/mountefi-workflow.png" width="50%">
+<img src="https://github.com/CarterLiebman/hackintosh/blob/scripts/img/mountefi-workflow.png" width="50%" style="align=center">
