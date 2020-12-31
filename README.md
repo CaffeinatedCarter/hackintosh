@@ -10,4 +10,4 @@
 
 ### usage
 
-[](img/mountefi-workflow.png)
+![screenshot of mountefi workflow](img/mountefi-workflow.png)
