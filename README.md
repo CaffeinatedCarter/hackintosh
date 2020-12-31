@@ -20,4 +20,4 @@ MountEFI is an Automator workflow that triggers a MountEFI shell, prompts for su
 
 Replace "disk3s5s1" with your installation disk.
 
-I recommend saving as an application for easy launching from Spotlight or [Alfred](alfredapp.com)
+I recommend saving as an application for easy launching from Spotlight or [Alfred](https://alfredapp.com)
