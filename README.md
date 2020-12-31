@@ -10,4 +10,4 @@
 
 ### usage
 
-![screenshot of mountefi workflow](img/mountefi-workflow.png | width=250px)
+![screenshot of mountefi workflow|width=250px](img/mountefi-workflow.png)
